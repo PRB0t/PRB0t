@@ -32,7 +32,6 @@
     "webpack": "^3.10.0"
   },
   "dependencies": {
-    "github-api": "^3.0.0",
-    "octonode": "^0.9.1"
+    "github-api": "^3.0.0"
   }
 }
