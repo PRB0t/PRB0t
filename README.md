@@ -1,2 +1,2 @@
-# ð¤ PRB0t
+# 🤖 PRB0t
 The Pull Request Bot for Anonymous contributions in GitHub!
