@@ -19,11 +19,10 @@ Request Sample:
 ## What can you do with it?
 
 - If you have a static website hosted in github... you could add a button **Edit this page**.
-  *(ah! and btw we're looking for contributors to build it 🤖)*
 - You can contribute anonymously to the *Internet 🕸*
 - You can upload files...
 - You can use your github for storage...
-- ... etc... ec..
+- ... etc... ecc..
 
 ## Try it!
 ```
@@ -31,13 +30,12 @@ curl -X POST \
   https://xrbhog4g8g.execute-api.eu-west-2.amazonaws.com/prod/prb0t \
   -H 'cache-control: no-cache' \
   -H 'content-type: application/json' \
-  -H 'postman-token: 4b922481-1932-bc3c-5544-a6391a712115' \
   -d '{
   "user": "PRB0t",
   "repo": "PRB0t",
   "desc": "🤖",
   "files": [
-  	{"path": "README.md", "content": "🤖"}
+  	{"path": "README.md", "content": "Failure is when you stop trying to do something."}
   ]
 }'
 ```
