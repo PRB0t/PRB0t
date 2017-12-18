@@ -27,7 +27,6 @@ export default class PullRequest {
 
         return new Promise((resolve, reject) => {
             if (this.isForked) {
-                console.log('Is not forked');
                 this.fork = this.repo;
                 return resolve();
             }
@@ -67,12 +66,12 @@ export default class PullRequest {
 
         const date = new Date(),
               yyyy = date.getFullYear().toString(),
-              mm = (date.getMonth()+1).toString(), // getMonth() is zero-based
+              mm = (date.getMonth()+1).toString(),
               dd  = date.getDate().toString(),
               M  = date.getMinutes().toString(),
               S  = date.getSeconds().toString();
 
-        return yyyy + (mm[1] ? mm : "0" + mm[0]) + (dd[1] ? dd : "0" + dd[0] ) + M + S; // padding
+        return yyyy + (mm[1] ? mm : "0" + mm[0]) + (dd[1] ? dd : "0" + dd[0] ) + M + S;
 
     }
 
