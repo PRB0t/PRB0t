@@ -4,6 +4,7 @@ The Pull Request Bot for Anonymous contributions on GitHub!
 ---
 
 [BETA] Url: `POST`:`https://xrbhog4g8g.execute-api.eu-west-2.amazonaws.com/prod/prb0t`
+
 Request Sample:
 ```json
 {
