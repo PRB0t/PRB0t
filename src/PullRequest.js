@@ -1,9 +1,5 @@
 const GitHub = require('github-api');
-let gh_user = process.env.GH_USER || false;
-let gh_pass = process.env.GH_PASS || false;
-let gh_token = process.env.GH_TOKEN || false;
-let github_conf = {};
-let mode = 'process';
+const gh_token = process.env.GH_TOKEN || false;
 
 export default class PullRequest {
 

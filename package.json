@@ -2,19 +2,19 @@
   "name": "prb0t",
   "version": "1.0.0",
   "description": "",
-  "main": "handler.js",
+  "now": {
+    "env": [
+      "GH_TOKEN"
+    ]
+  },
   "scripts": {
-    "compile": "./node_modules/.bin/webpack",
-    "clean": "rm -rf handler.zip dist",
-    "zip:dist": "zip -r handler.zip dist index.js",
-    "upload:s3": "aws s3 cp ./handler.zip s3://prb0t",
-    "pre:publish:lambda": "npm-run-all clean compile zip:dist upload:s3",
-    "publish:lambda": "npm run pre:publish:lambda && aws lambda update-function-code --function-name prb0t --s3-bucket prb0t --s3-key handler.zip",
+    "build": "./node_modules/.bin/webpack",
+    "start": "micro",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/PRB0t/PRB0t.git"
+    "url": "PRB0t/PRB0t"
   },
   "keywords": [],
   "author": "",
@@ -32,6 +32,7 @@
     "webpack": "^3.10.0"
   },
   "dependencies": {
-    "github-api": "^3.0.0"
+    "github-api": "^3.0.0",
+    "micro": "^9.0.2"
   }
 }

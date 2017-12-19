@@ -1,24 +1,16 @@
 const PR = require('./dist/PullRequest').default;
+const {json} = require('micro')
 
-exports.handler =  (event, context, done) => {
+module.exports = async (req, res) => {
+    const body = await json(req)
 
-    if (event.body) {
-        event = JSON.parse(event.body);
+    try {
+        const pr = await new PR(body.user, body.repo, body.files, body.desc || '')
+        return pr.data
+    } catch(err) {
+        console.log(err);
+        const error = new Error(`Pull request can't be created!`)
+        error.statusCode = 500
+        throw error
     }
-
-    new PR(event.user, event.repo, event.files, event.desc || '')
-        .then((pr) => {
-            console.log(pr);
-            done(null, {
-                statusCode: 200,
-                body: JSON.stringify(pr.data)
-            });
-        }).catch((e) => {
-            console.log(e);
-            done(null, {
-                statusCode: 500,
-                body: 'Pull request can\'t be created!'
-            });
-        });
-
 }

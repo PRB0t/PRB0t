@@ -5,6 +5,12 @@ The Pull Request Bot for Anonymous contributions on GitHub!
 
 [BETA] Url: `POST`:`https://xrbhog4g8g.execute-api.eu-west-2.amazonaws.com/prod/prb0t`
 
+Or host your own version using [now.sh](https://zeit.co/now):
+
+`now PRB0t/PRB0t`
+
+You'll be asked for a Github token.
+
 Request Sample:
 ```json
 {
