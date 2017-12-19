@@ -1,4 +1,4 @@
-# 🤖 PRB0t
+# ð¤ PRB0t
 The Pull Request Bot for Anonymous contributions on GitHub!
 
 ---
@@ -20,7 +20,7 @@ Request Sample:
 ## What can you do with it?
 
 - If you have a static website hosted in github... you could add a button **Edit this page**.
-- You can contribute anonymously to the *Internet 🕸*
+- You can contribute anonymously to the *Internet ð¸*
 - You can upload files...
 - You can use your github for storage...
 - ... etc... ecc..
@@ -34,7 +34,7 @@ curl -X POST \
   -d '{
   "user": "PRB0t",
   "repo": "PRB0t",
-  "desc": "🤖",
+  "desc": "ð¤",
   "files": [
   	{"path": "README.md", "content": "Failure is when you stop trying to do something."}
   ]
@@ -42,4 +42,4 @@ curl -X POST \
 ```
 
 ## Contribute
-[We're looking for Team members](https://github.com/PRB0t/PRB0t/issues/5) to form a little community around this little tool which we believe has a lot of potentialities ✨
+[We're looking for Team members](https://github.com/PRB0t/PRB0t/issues/5) to form a little community around this little tool which we believe has a lot of potentialities â¨

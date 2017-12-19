@@ -15,6 +15,6 @@ const files =  [
     return { path: file.replace(`${__dirname}/`, ''), content: fs.readFileSync(file).toString() };
 })
 
-new PR('PRB0t', 'PRB0t', files, '🤖', true);
+new PR('PRB0t', 'PRB0t', files, 'ð¤').catch(e => console.log(e));
 
 

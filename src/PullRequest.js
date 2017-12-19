@@ -26,14 +26,14 @@ export default class PullRequest {
     fork() {
 
         return new Promise((resolve, reject) => {
-            if (this.isForked) {
+            if (this.isBotRepo) {
                 this.fork = this.repo;
                 return resolve();
             }
             this.repo.fork().then(res => {
                 resolve(res);
                 this.fork = this.gh.getRepo(res.data.full_name);
-            }).catc(reject);
+            }).catch(reject);
         });
 
     }
@@ -131,7 +131,7 @@ export default class PullRequest {
 
     }
 
-    constructor(user, repo, files, commitMessage, isForked = false) {
+    constructor(user, repo, files, commitMessage) {
 
         this.gh = new GitHub({
             token: gh_token
@@ -140,7 +140,7 @@ export default class PullRequest {
         this.filesToCommit = [];
         this.files = files;
 
-        this.isForked = isForked;
+        this.isBotRepo = user === 'PRB0t';
         this.currentCommitSHA = null;
         this.currentTreeSHA = null;
         this.user = user;
