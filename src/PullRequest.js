@@ -119,8 +119,9 @@ export default class PullRequest {
     createPullRequest() {
 
         return this.repo.createPullRequest({
-            title: `ð¤  PRB0t ${this.forkBranch}`,
-            body: `Automated submit by PRB0t`,
+            title: `🤖 PRB0t ${this.forkBranch}`,
+            body: `${this.commitMessage}
+-- Automated submit by PRB0t`,
             base: 'master',
             head: `PRB0t:${this.forkBranch}`
         })
@@ -141,7 +142,7 @@ export default class PullRequest {
         this.currentTreeSHA = null;
         this.user = user;
         this.masterRepo = repo;
-        this.commitMessage = `ð¤ PRB0t - ${commitMessage}`;
+        this.commitMessage = `🤖 PRB0t - ${commitMessage}`;
         this.branch = 'master';
         this.forkBranch = `pr-${this.getCurrentTimestamp()}`;
 
