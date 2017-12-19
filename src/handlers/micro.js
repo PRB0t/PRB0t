@@ -1,7 +1,7 @@
-const PR = require('./dist/PullRequest').default;
-const {json} = require('micro')
+const PR = require('./../PullRequest');
+const {json} = require('micro');
 
-module.exports = async (req, res) => {
+const handler = async (req, res) => {
     const body = await json(req)
 
     try {
@@ -14,3 +14,5 @@ module.exports = async (req, res) => {
         throw error
     }
 }
+
+module.exports = handler;

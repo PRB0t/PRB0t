@@ -1,9 +1,12 @@
 const path = require("path");
 
 module.exports = {
-    entry: './src/PullRequest.js',
+    entry: {
+        lambda: './src/handlers/lambda.js',
+        micro: './src/handlers/micro.js'
+    },
     output: {
-        filename: 'PullRequest.js',
+        filename: '[name].js',
         libraryTarget: 'commonjs2',
         path: path.join(__dirname, "dist")
     },
@@ -16,7 +19,10 @@ module.exports = {
                 use: {
                     loader: 'babel-loader',
                     options: {
-                        presets: ['babel-preset-env']
+                        presets: ['babel-preset-env'],
+                        plugins: [
+                            ["transform-runtime", { "polyfill": false }]
+                        ]
                     }
                 }
             }

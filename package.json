@@ -10,11 +10,11 @@
   "scripts": {
     "build": "./node_modules/.bin/webpack",
     "lambda:clean": "rm -rf handler.zip dist",
-    "lambda:zip": "zip -r handler.zip dist index.js",
+    "lambda:zip": "zip -r handler.zip dist",
     "lambda:s3:upload": "aws s3 cp ./handler.zip s3://prb0t",
     "lambda:prepare": "npm-run-all lambda:clean build lambda:zip lambda:s3:upload",
     "lambda:publish": "npm run lambda:prepare && aws lambda update-function-code --function-name prb0t --s3-bucket prb0t --s3-key handler.zip",
-    "start": "micro",
+    "start": "micro dist/micro.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -34,9 +34,11 @@
     "babel-loader": "^7.1.2",
     "babel-preset-env": "^1.6.1",
     "npm-run-all": "^4.1.2",
-    "webpack": "^3.10.0"
+    "webpack": "^3.10.0",
+    "webpack-node-externals": "^1.6.0"
   },
   "dependencies": {
+    "babel-plugin-transform-runtime": "^6.23.0",
     "github-api": "^3.0.0",
     "micro": "^9.0.2"
   }
