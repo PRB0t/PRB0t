@@ -1,4 +1,4 @@
-const PR = require('./../PullRequest');
+const PR = require('./../PullRequest').default;
 const {json} = require('micro');
 
 const handler = async (req, res) => {
