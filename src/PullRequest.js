@@ -3,6 +3,87 @@ const gh_token = process.env.GH_TOKEN || false;
 
 export default class PullRequest {
 
+    constructor(
+        user,
+        repo,
+        branch,
+        token = null
+    ) {
+
+        this.gh = new GitHub({
+            token: token || gh_token
+        });
+        this.botUser = this.gh.getUser();
+
+        this.filesToCommit = [];
+
+        this.isBotRepo = this.botUser.login === user;
+        this.currentCommitSHA = null;
+        this.currentTreeSHA = null;
+        this.user = user;
+        this.masterRepo = repo;
+        this.branch = branch || 'master';
+        this.forkBranch = `pr-${this._getCurrentTimestamp()}`;
+
+    }
+
+    configure(
+        files,
+        commitMessage = null,
+        titlePullRequest = null,
+        descriptionPullRequest = null
+    ) {
+
+        this.commitMessage = `🤖 ${commitMessage || 'Anonymous Commit'}`;
+        this.titlePullRequest = titlePullRequest;
+        this.descriptionPullRequest = descriptionPullRequest;
+        this.files = files;
+
+    }
+
+    send() {
+
+        console.log('Create fork...');
+        return this._fork()
+            .then(() => {
+                console.log('Create branch...');
+                return this._createBranch()
+            })
+            .then(() => {
+                console.log('Set commit SHA...');
+                return this._setCurrentCommitSHA()
+            })
+            .then(() => {
+                console.log('Set Tree SHA');
+                return this._setCurrentTreeSHA()
+            })
+            .then(() => {
+                console.log('Push files');
+                return this._pushFiles(this.files)
+            })
+            .then(() => {
+                console.log('Set commit SHA...');
+                return this._setCurrentCommitSHA(`heads/${this.forkBranch}`)
+            })
+            .then(() => {
+                console.log('Create Tree SHA...');
+                return this._createTree()
+            })
+            .then(() => {
+                console.log('Commit SHA...');
+                return this._commitChanges()
+            })
+            .then(() => {
+                console.log('Update HEAD SHA...');
+                return this._updateHead()
+            })
+            .then(() => {
+                console.log('Creating PR...');
+                return this._createPullRequest();
+            });
+
+    }
+
     get fullRepoName () {
 
         return `${this.user}/${this.masterRepo}`;
@@ -19,28 +100,31 @@ export default class PullRequest {
 
     }
 
-    fork() {
+    _fork() {
 
         return new Promise((resolve, reject) => {
+
             if (this.isBotRepo) {
                 this.fork = this.repo;
                 return resolve();
             }
-            this.repo.fork().then(res => {
+
+            return this.repo.fork().then(res => {
                 resolve(res);
                 this.fork = this.gh.getRepo(res.data.full_name);
             }).catch(reject);
+
         });
 
     }
 
-    createBranch() {
+    _createBranch() {
 
         return this.fork.createBranch('master', this.forkBranch);
 
     }
 
-    setCurrentCommitSHA(reference = 'heads/master') {
+    _setCurrentCommitSHA(reference = 'heads/master') {
 
         return this.fork.getRef(reference)
             .then((ref) => {
@@ -49,7 +133,7 @@ export default class PullRequest {
 
     }
 
-    setCurrentTreeSHA() {
+    _setCurrentTreeSHA() {
 
         return this.repo.getCommit(this.currentCommitSHA)
             .then((commit) => {
@@ -58,7 +142,7 @@ export default class PullRequest {
 
     }
 
-    getCurrentTimestamp() {
+    _getCurrentTimestamp() {
 
         const date = new Date(),
               yyyy = date.getFullYear().toString(),
@@ -71,7 +155,7 @@ export default class PullRequest {
 
     }
 
-    createFile(file) {
+    _createFile(file) {
 
         return this.fork.createBlob(file.content)
             .then((blob) => {
@@ -85,20 +169,20 @@ export default class PullRequest {
 
     }
 
-    createTree() {
+    _createTree() {
         return this.fork.createTree(this.filesToCommit, this.currentTreeSHA)
             .then((tree) => {
                 this.currentTreeSHA = tree.data.sha;
             });
     }
 
-    pushFiles() {
+    _pushFiles(files) {
 
-        return Promise.all(this.files.map(file => this.createFile(file)));
+        return Promise.all(files.map(file => this._createFile(file)));
 
     }
 
-    commitChanges() {
+    _commitChanges() {
 
         return this.fork.commit(this.currentCommitSHA, this.currentTreeSHA, this.commitMessage)
             .then((commit) => {
@@ -107,7 +191,7 @@ export default class PullRequest {
 
     }
 
-    updateHead() {
+    _updateHead() {
 
         return this.fork.updateHead(
             `heads/${this.forkBranch}`,
@@ -116,75 +200,18 @@ export default class PullRequest {
 
     }
 
-    createPullRequest() {
+    _createPullRequest() {
 
         return this.repo.createPullRequest({
-            title: `🤖 PRB0t ${this.forkBranch}`,
-            body: `${this.commitMessage}
--- Automated submit by PRB0t`,
+            title: this.titlePullRequest || `🤖 PRB0t ${this.forkBranch}`,
+            body: `${this.descriptionPullRequest || this.commitMessage}
+--
+Automated submit by PRB0t`,
             base: 'master',
             head: `PRB0t:${this.forkBranch}`
-        })
-
-    }
-
-    constructor(user, repo, files, commitMessage) {
-
-        this.gh = new GitHub({
-            token: gh_token
         });
 
-        this.filesToCommit = [];
-        this.files = files;
-
-        this.isBotRepo = user === 'PRB0t';
-        this.currentCommitSHA = null;
-        this.currentTreeSHA = null;
-        this.user = user;
-        this.masterRepo = repo;
-        this.commitMessage = `🤖 PRB0t - ${commitMessage}`;
-        this.branch = 'master';
-        this.forkBranch = `pr-${this.getCurrentTimestamp()}`;
-
-        console.log('Create fork...');
-        return this.fork()
-            .then(() => {
-                console.log('Create branch...');
-                return this.createBranch()
-            })
-            .then(() => {
-                console.log('Set commit SHA...');
-                return this.setCurrentCommitSHA()
-            })
-            .then(() => {
-                console.log('Set Tree SHA');
-                return this.setCurrentTreeSHA()
-            })
-            .then(() => {
-                console.log('Push files');
-                return this.pushFiles()
-            })
-            .then(() => {
-                console.log('Set commit SHA...');
-                return this.setCurrentCommitSHA(`heads/${this.forkBranch}`)
-            })
-            .then(() => {
-                console.log('Create Tree SHA...');
-                return this.createTree()
-            })
-            .then(() => {
-                console.log('Commit SHA...');
-                return this.commitChanges()
-            })
-            .then(() => {
-                console.log('Update HEAD SHA...');
-                return this.updateHead()
-            })
-            .then(() => {
-                console.log('Creating PR...');
-                return this.createPullRequest();
-            });
-
     }
+
 
 }

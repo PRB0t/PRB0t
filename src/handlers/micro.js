@@ -2,11 +2,12 @@ const PR = require('./../PullRequest').default;
 const {json} = require('micro');
 
 const handler = async (req, res) => {
-    const body = await json(req)
-
     try {
-        const pr = await new PR(body.user, body.repo, body.files, body.desc || '')
-        return pr.data
+        const body = await json(req)
+        const pr = new PR(body.user, body.repo, body.token);
+        pr.configure(body.files, body.commit, body.title, body.description);
+        const { data } = await pr.send();
+        return data;
     } catch(err) {
         console.log(err);
         const error = new Error(`Pull request can't be created!`)

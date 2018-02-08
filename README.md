@@ -3,7 +3,7 @@ The Pull Request Bot for Anonymous contributions on GitHub!
 
 ---
 
-[BETA] Url: `POST`:`https://xrbhog4g8g.execute-api.eu-west-2.amazonaws.com/prod/prb0t`
+Url: `POST`:`https://xrbhog4g8g.execute-api.eu-west-2.amazonaws.com/prod/prb0t`
 
 Or host your own version using [now.sh](https://zeit.co/now):
 
@@ -16,7 +16,9 @@ Request Sample:
 {
   "user": "<github-user>",
   "repo": "<github-repo>",
-  "desc": "<commit-description>",
+  "title": "<pull-request-title>",
+  "description": "<pull-request-description>",
+  "commit": "<commit-description>",
   "files": [
   	{"path": "<file-path>", "content": "<file-content>"}
   ]
@@ -40,7 +42,9 @@ curl -X POST \
   -d '{
   "user": "PRB0t",
   "repo": "PRB0t",
-  "desc": "🤖",
+  "description": "🤖",
+  "title": "Dare to try",
+  "commit": "a try",
   "files": [
   	{"path": "README.md", "content": "Failure is when you stop trying to do something."}
   ]
