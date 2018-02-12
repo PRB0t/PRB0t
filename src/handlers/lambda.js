@@ -6,7 +6,7 @@ export function handler (event, context, done) {
         event = JSON.parse(event.body);
     }
 
-    const pr = new PR(event.user, event.repo, event.token)
+    const pr = new PR(event.user, event.repo, event.branch, event.token)
 
     pr.configure(event.files, event.commit, event.title, event.description);
 

@@ -6,7 +6,7 @@ export default class PullRequest {
     constructor(
         user,
         repo,
-        branch,
+        branch = 'default',
         token = null
     ) {
 
@@ -22,7 +22,7 @@ export default class PullRequest {
         this.currentTreeSHA = null;
         this.user = user;
         this.masterRepo = repo;
-        this.branch = branch || 'master';
+        this.branch = branch !== 'default' ? branch : this.repo.default_branch;
         this.forkBranch = `pr-${this._getCurrentTimestamp()}`;
 
     }
@@ -46,16 +46,20 @@ export default class PullRequest {
         console.log('Create fork...');
         return this._fork()
             .then(() => {
+                console.log('Set commit SHA...');
+                return this._updateForkDefaultBranch(`heads/${this.default_branch}`);
+            })
+            .then(() => {
                 console.log('Create branch...');
                 return this._createBranch()
             })
             .then(() => {
                 console.log('Set commit SHA...');
-                return this._setCurrentCommitSHA()
+                return this._setCurrentCommitSHA(`heads/${this.default_branch}`);
             })
             .then(() => {
                 console.log('Set Tree SHA');
-                return this._setCurrentTreeSHA()
+                return this._setCurrentTreeSHA();
             })
             .then(() => {
                 console.log('Push files');
@@ -118,15 +122,24 @@ export default class PullRequest {
 
     }
 
+    _updateForkDefaultBranch() {
+
+        return this.repo.getRef(`heads/${this.branch}`).then((ref) => {
+            return this.fork.updateHead(this.branch, ref.data.object.sha, true)
+        })
+
+    }
+
     _createBranch() {
 
-        return this.fork.createBranch('master', this.forkBranch);
+        return this.fork.createBranch(this.branch, this.forkBranch);
 
     }
 
     _setCurrentCommitSHA(reference = 'heads/master') {
 
-        return this.fork.getRef(reference)
+        return this.fork
+            .getRef(reference)
             .then((ref) => {
                 this.currentCommitSHA = ref.data.object.sha;
             });
@@ -135,7 +148,8 @@ export default class PullRequest {
 
     _setCurrentTreeSHA() {
 
-        return this.repo.getCommit(this.currentCommitSHA)
+        return this.repo
+            .getCommit(this.currentCommitSHA)
             .then((commit) => {
                 this.currentTreeSHA = commit.data.tree.sha;
             });
