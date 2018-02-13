@@ -6,23 +6,26 @@ export default class PullRequest {
     constructor(
         user,
         repo,
-        branch = 'default',
+        branch = null,
         token = null
     ) {
 
         this.gh = new GitHub({
             token: token || gh_token
         });
-        this.botUser = this.gh.getUser();
+
+        this.gh.getUser().getProfile().then(res => {
+            this.botUser = res.data;
+            this.isBotRepo = this.botUser.login === user;
+        });
 
         this.filesToCommit = [];
 
-        this.isBotRepo = this.botUser.login === user;
         this.currentCommitSHA = null;
         this.currentTreeSHA = null;
         this.user = user;
         this.masterRepo = repo;
-        this.branch = branch !== 'default' ? branch : this.repo.default_branch;
+        this._branch = branch;
         this.forkBranch = `pr-${this._getCurrentTimestamp()}`;
 
     }
@@ -46,8 +49,12 @@ export default class PullRequest {
         console.log('Create fork...');
         return this._fork()
             .then(() => {
-                console.log('Set commit SHA...');
-                return this._updateForkDefaultBranch(`heads/${this.default_branch}`);
+                console.log('Set branch');
+                return this._setBranch();
+            })
+            .then(() => {
+                console.log('Update the fork to the default branch...');
+                return this._updateForkDefaultBranch();
             })
             .then(() => {
                 console.log('Create branch...');
@@ -55,7 +62,7 @@ export default class PullRequest {
             })
             .then(() => {
                 console.log('Set commit SHA...');
-                return this._setCurrentCommitSHA(`heads/${this.default_branch}`);
+                return this._setCurrentCommitSHA(`heads/${this.branch}`);
             })
             .then(() => {
                 console.log('Set Tree SHA');
@@ -94,6 +101,13 @@ export default class PullRequest {
 
     }
 
+    get branch() {
+
+        const branch = this._branch || this.repo.default_branch;
+        return branch;
+
+    }
+
     get repo() {
 
         if (!this._repo) {
@@ -101,6 +115,18 @@ export default class PullRequest {
         }
 
         return this._repo;
+
+    }
+
+    _setBranch() {
+
+        if (this.branch) return;
+
+        return this.repo.getDetails().then(res => {
+
+            this._branch = res.data.source ? res.data.source.default_branch : res.data.default_branch;
+
+        });
 
     }
 
@@ -125,8 +151,23 @@ export default class PullRequest {
     _updateForkDefaultBranch() {
 
         return this.repo.getRef(`heads/${this.branch}`).then((ref) => {
-            return this.fork.updateHead(this.branch, ref.data.object.sha, true)
-        })
+            return this.fork.getRef(`heads/${this.branch}`).then(forkRef => {
+
+                if (forkRef.data.object.sha !== ref.data.object.sha) {
+                    return this.fork.createPullRequest({
+                        title: `Update fork`,
+                        body: `Update fork`,
+                        base: this.branch,
+                        head: `${this.user}:${this.branch}`,
+                        maintainer_can_modify: false
+                    }).then(res => {
+                        return this.fork.mergePullRequest(res.data.number, { merge_method: 'rebase' });
+                    }).catch(e => console.log(e.request, e.response.data.errors))
+                }
+
+                return true;
+            });
+        });
 
     }
 
@@ -221,8 +262,8 @@ export default class PullRequest {
             body: `${this.descriptionPullRequest || this.commitMessage}
 --
 Automated submit by PRB0t`,
-            base: 'master',
-            head: `PRB0t:${this.forkBranch}`
+            base: this.branch,
+            head: `${this.botUser.login}:${this.forkBranch}`
         });
 
     }
