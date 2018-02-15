@@ -161,7 +161,7 @@ export default class PullRequest {
                         head: `${this.user}:${this.branch}`,
                         maintainer_can_modify: false
                     }).then(res => {
-                        return this.fork.mergePullRequest(res.data.number, { merge_method: 'squash' });
+                        return this.fork.mergePullRequest(res.data.number);
                     }).catch(e => console.log(e.request, e.response.data.errors))
                 }
 
