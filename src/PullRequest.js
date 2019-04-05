@@ -40,6 +40,9 @@ export default class PullRequest {
         this.commitMessage = `🤖 ${commitMessage || 'Anonymous Commit'}`;
         this.titlePullRequest = titlePullRequest;
         this.descriptionPullRequest = descriptionPullRequest;
+        for(let file of files){
+            file.content = Buffer.from(file.content)
+        }
         this.files = files;
 
     }
