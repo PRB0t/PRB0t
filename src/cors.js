@@ -22,55 +22,54 @@
 //
 // From https://github.com/possibilities/micro-cors
 
-const { send } = require('micro')
-
 const DEFAULT_ALLOW_METHODS = [
-   'POST',
-   'GET',
-   'PUT',
-   'PATCH',
-   'DELETE',
-   'OPTIONS'
- ]
- 
- const DEFAULT_ALLOW_HEADERS = [
-   'X-Requested-With',
-   'Access-Control-Allow-Origin',
-   'X-HTTP-Method-Override',
-   'Content-Type',
-   'Cache-Control',
-   'Authorization',
-   'Accept'
- ]
- 
- const DEFAULT_MAX_AGE_SECONDS = 60 * 60 * 24 // 24 hours
- 
- const cors = (options = {}) => handler => (req, res, ...restArgs) => {
-   const {
-     origin = '*',
-     maxAge = DEFAULT_MAX_AGE_SECONDS,
-     allowMethods = DEFAULT_ALLOW_METHODS,
-     allowHeaders = DEFAULT_ALLOW_HEADERS,
-     allowCredentials = true,
-     exposeHeaders = []
-   } = options
- 
-   res.setHeader('Access-Control-Allow-Origin', origin)
-   if (allowCredentials) {
-     res.setHeader('Access-Control-Allow-Credentials', 'true')
-   }
-   if (exposeHeaders.length) {
-     res.setHeader('Access-Control-Expose-Headers', exposeHeaders.join(','))
-   }
-   if (req.method === 'OPTIONS') {
-     res.setHeader('Access-Control-Allow-Methods', allowMethods.join(','))
-     res.setHeader('Access-Control-Allow-Headers', allowHeaders.join(','))
-     res.setHeader('Access-Control-Max-Age', String(maxAge))
-     return send(res, 200, 'ok!');
-   }
-   else {
-      return handler(req, res, ...restArgs)
-   }
- }
- 
- module.exports = cors
+    "POST",
+    "GET",
+    "PUT",
+    "PATCH",
+    "DELETE",
+    "OPTIONS"
+];
+
+const DEFAULT_ALLOW_HEADERS = [
+    "X-Requested-With",
+    "Access-Control-Allow-Origin",
+    "X-HTTP-Method-Override",
+    "Content-Type",
+    "Cache-Control",
+    "Authorization",
+    "Accept"
+];
+
+const DEFAULT_MAX_AGE_SECONDS = 60 * 60 * 24; // 24 hours
+
+const cors = (options = {}) => handler => (req, res, ...restArgs) => {
+    const {
+        origin = "*",
+        maxAge = DEFAULT_MAX_AGE_SECONDS,
+        allowMethods = DEFAULT_ALLOW_METHODS,
+        allowHeaders = DEFAULT_ALLOW_HEADERS,
+        allowCredentials = true,
+        exposeHeaders = []
+    } = options;
+
+    res.setHeader("Access-Control-Allow-Origin", origin);
+    if (allowCredentials) {
+        res.setHeader("Access-Control-Allow-Credentials", "true");
+    }
+    if (exposeHeaders.length) {
+        res.setHeader("Access-Control-Expose-Headers", exposeHeaders.join(","));
+    }
+
+    res.setHeader("Access-Control-Allow-Methods", allowMethods.join(","));
+    res.setHeader("Access-Control-Allow-Headers", allowHeaders.join(","));
+    res.setHeader("Access-Control-Max-Age", String(maxAge));
+
+    if (req.method === "OPTIONS") {
+        return {};
+    }
+
+    return handler(req, res, ...restArgs);
+};
+
+module.exports = cors;
