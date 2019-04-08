@@ -1,5 +1,6 @@
 const PR = require('./../PullRequest').default;
 const {json} = require('micro');
+const cors = require('../cors')()
 
 const handler = async (req, res) => {
     try {
@@ -16,4 +17,4 @@ const handler = async (req, res) => {
     }
 }
 
-module.exports = handler;
+module.exports = cors(handler);
