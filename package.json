@@ -9,6 +9,7 @@
   },
   "scripts": {
     "build": "./node_modules/.bin/webpack",
+    "heroku-postbuild": "npm run build",
     "lambda:clean": "rm -rf handler.zip dist",
     "lambda:zip": "zip -r handler.zip dist",
     "lambda:s3:upload": "aws s3 cp ./handler.zip s3://prb0t",
@@ -41,5 +42,8 @@
     "babel-plugin-transform-runtime": "^6.23.0",
     "github-api": "^3.0.0",
     "micro": "^9.0.2"
+  },
+  "engines": {
+    "node": "9.x"
   }
 }
