@@ -44,3 +44,5 @@ curl -X POST \
   ]
 }'
 ```
+
+Or [try it](https://codepen.io/j-rewerts/pen/NmbXPx) in your browser!
