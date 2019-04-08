@@ -22,6 +22,8 @@
 //
 // From https://github.com/possibilities/micro-cors
 
+const { send } = require('micro')
+
 const DEFAULT_ALLOW_METHODS = [
    'POST',
    'GET',
@@ -59,15 +61,15 @@ const DEFAULT_ALLOW_METHODS = [
    if (exposeHeaders.length) {
      res.setHeader('Access-Control-Expose-Headers', exposeHeaders.join(','))
    }
- 
-   const preFlight = req.method === 'OPTIONS'
-   if (preFlight) {
+   if (req.method === 'OPTIONS') {
      res.setHeader('Access-Control-Allow-Methods', allowMethods.join(','))
      res.setHeader('Access-Control-Allow-Headers', allowHeaders.join(','))
      res.setHeader('Access-Control-Max-Age', String(maxAge))
+     return send(res, 200, 'ok!');
    }
- 
-   return handler(req, res, ...restArgs)
+   else {
+      return handler(req, res, ...restArgs)
+   }
  }
  
  module.exports = cors
