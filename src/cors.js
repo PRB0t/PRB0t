@@ -38,6 +38,7 @@ const DEFAULT_ALLOW_METHODS = [
    'Access-Control-Allow-Origin',
    'X-HTTP-Method-Override',
    'Content-Type',
+   'Cache-Control',
    'Authorization',
    'Accept'
  ]
