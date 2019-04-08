@@ -1,4 +1,4 @@
-const PR = require('./../PullRequest').default;
+const PR = require('./../PullRequest');
 const {json} = require('micro');
 const cors = require('../cors')()
 
