@@ -43,7 +43,7 @@ export default class PullRequest {
         for(let file of files){
             file.content = Buffer.from(file.content)
         }
-        this.files = files;
+        this.files = files.map( ({ path, content }) => ({ path, content: Buffer.from(content) }) );
 
     }
 
