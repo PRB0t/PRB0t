@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "babel-plugin-transform-runtime": "^6.23.0",
-    "github-api": "^3.0.0",
+    "github-api": "^3.2.0",
     "micro": "^9.0.2"
   },
   "engines": {
