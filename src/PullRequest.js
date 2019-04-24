@@ -45,7 +45,7 @@ module.exports = class PullRequest {
         this.commitAuthor = commitAuthor;
         this.titlePullRequest = titlePullRequest;
         this.descriptionPullRequest = descriptionPullRequest;
-        this.files = files;
+        this.files = files.map( ({ path, content }) => ({ path, content: Buffer.from(content) }) );
 
     }
 
