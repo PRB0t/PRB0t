@@ -4,7 +4,8 @@
   "description": "",
   "now": {
     "env": [
-      "GH_TOKEN"
+      "GH_TOKEN",
+      "HOST_NAME"
     ]
   },
   "scripts": {
@@ -40,6 +41,7 @@
   "dependencies": {
     "babel-plugin-transform-runtime": "^6.23.0",
     "github-api": "^3.0.0",
-    "micro": "^9.0.2"
+    "micro": "^9.0.2",
+    "micro-cors": "^0.1.1"
   }
 }
