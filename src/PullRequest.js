@@ -34,10 +34,15 @@ export default class PullRequest {
         files,
         commitMessage = null,
         titlePullRequest = null,
-        descriptionPullRequest = null
+        descriptionPullRequest = null,
+        commitAuthor = {
+            'name': 'canada-bot',
+            'email': 'canada.pr.bot@gmail.com'
+        }
     ) {
 
         this.commitMessage = `🤖 ${commitMessage || 'Anonymous Commit'}`;
+        this.commitAuthor = commitAuthor;
         this.titlePullRequest = titlePullRequest;
         this.descriptionPullRequest = descriptionPullRequest;
         this.files = files.map( ({ path, content }) => ({ path, content: Buffer.from(content) }) );
@@ -239,7 +244,9 @@ export default class PullRequest {
 
     _commitChanges() {
 
-        return this.fork.commit(this.currentCommitSHA, this.currentTreeSHA, this.commitMessage)
+        return this.fork.commit(this.currentCommitSHA, this.currentTreeSHA, this.commitMessage, {
+            author: this.commitAuthor
+        })
             .then((commit) => {
                 this.currentCommitSHA = commit.data.sha;
             });
