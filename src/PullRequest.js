@@ -36,8 +36,8 @@ export default class PullRequest {
         titlePullRequest = null,
         descriptionPullRequest = null,
         commitAuthor = {
-            'name': 'canada-bot',
-            'email': 'canada.pr.bot@gmail.com'
+            'name': 'PRB0t',
+            'email': '34620110+PRB0t@users.noreply.github.com'
         }
     ) {
 

@@ -41,7 +41,7 @@
   "dependencies": {
     "babel-plugin-transform-runtime": "^6.23.0",
     "github-api": "^3.2.0",
-    "micro-cors": "^0.1.1"
+    "micro-cors": "^0.1.1",
     "micro": "^9.0.2"
   }
 }
