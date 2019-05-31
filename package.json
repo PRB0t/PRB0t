@@ -16,7 +16,7 @@
     "lambda:s3:upload": "aws s3 cp ./handler.zip s3://prb0t",
     "lambda:prepare": "npm-run-all lambda:clean build lambda:zip lambda:s3:upload",
     "lambda:publish": "npm run lambda:prepare && aws lambda update-function-code --function-name prb0t --s3-bucket prb0t --s3-key handler.zip",
-    "start": "micro dist/micro.js",
+    "start": "micro -p ${PORT-3000} dist/micro.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
