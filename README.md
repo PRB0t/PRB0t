@@ -2,8 +2,32 @@
 The Pull Request Bot for Anonymous contributions on GitHub!
 
 ---
+With PRB0t you can make pull request on GitHub by using a `JSON` description of the changes.
 
-Url: `POST`:`https://xrbhog4g8g.execute-api.eu-west-2.amazonaws.com/prod/prb0t`
+## Install
+```
+npm install -S @prb0t/pr
+```
+
+## Usage
+```
+  const pr = new PR(body.user, body.repo, body.branch, body.token);
+
+  pr.configure(
+      [
+        {"path": "<file-path>", "content": "<file-content>"}
+      ],
+      "<commit-message>",
+      "<title>",
+      "<description>",
+      body.author || {
+          name: 'PRB0t',
+          email: '34620110+PRB0t@users.noreply.github.com',
+      }
+  );
+
+  const { data } = await pr.send(); // data holds the response of the PR creation.
+```
 
 Or host your own version using [now.sh](https://zeit.co/now):
 
