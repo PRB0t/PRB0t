@@ -243,6 +243,7 @@ module.exports = class PullRequest {
     }
 
     _commitChanges() {
+
         return this.fork.commit(this.currentCommitSHA, this.currentTreeSHA, this.commitMessage, {
             author: this.commitAuthor
         })

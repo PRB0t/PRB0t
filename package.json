@@ -1,15 +1,17 @@
 {
-  "name": "prb0t",
+  "name": "@prb0t/pr",
+  "main": "src/PullRequest.js",
   "version": "1.0.0",
-  "description": "",
+  "description": "Make PR on GitHub, with JSON description of changes",
   "now": {
     "env": [
-      "GH_TOKEN"
+      "GH_TOKEN",
+      "HOST_NAME"
     ]
   },
   "scripts": {
-    "build": "./node_modules/.bin/webpack",
     "heroku-postbuild": "npm run build",
+    "build": "webpack",
     "lambda:clean": "rm -rf handler.zip dist",
     "lambda:zip": "zip -r handler.zip dist",
     "lambda:s3:upload": "aws s3 cp ./handler.zip s3://prb0t",
@@ -20,28 +22,29 @@
   },
   "repository": {
     "type": "git",
-    "url": "PRB0t/PRB0t"
+    "url": "git+https://github.com/PRB0t/PRB0t.git"
   },
   "keywords": [],
-  "author": "",
-  "license": "ISC",
+  "author": "Mauro Mandracchia",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/PRB0t/PRB0t/issues"
   },
   "homepage": "https://github.com/PRB0t/PRB0t#readme",
   "devDependencies": {
     "babel-cli": "^6.26.0",
-    "babel-core": "^6.26.0",
+    "babel-core": "^6.26.3",
     "babel-loader": "^7.1.2",
-    "babel-preset-env": "^1.6.1",
     "micro-dev": "^3.0.0",
+    "babel-preset-env": "^1.7.0",
     "npm-run-all": "^4.1.2",
-    "webpack": "^3.10.0",
+    "webpack": "^4.33.0",
     "webpack-node-externals": "^1.6.0"
   },
   "dependencies": {
     "babel-plugin-transform-runtime": "^6.23.0",
     "github-api": "^3.2.0",
+    "micro-cors": "^0.1.1",
     "micro": "^9.0.2"
   },
   "engines": {
