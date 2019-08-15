@@ -2,6 +2,7 @@
 The Pull Request Bot for Anonymous contributions on GitHub!
 
 ---
+With PRB0t you can make pull request on GitHub by using a `JSON` description of the changes.
 
 Url: `POST`:`https://canada-pr-bot.herokuapp.com/`
 
