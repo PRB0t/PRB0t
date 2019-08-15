@@ -16,8 +16,8 @@ const handler = async (req, res) => {
             body.title,
             body.description,
             body.author || {
-                name: 'PRB0t',
-                email: '34620110+PRB0t@users.noreply.github.com',
+                name: 'canada-bot',
+                email: 'canada.pr.bot@gmail.com',
             }
         );
 
@@ -32,6 +32,6 @@ const handler = async (req, res) => {
         throw error;
 
     }
-}
+};
 
 module.exports = origin ? microCors({ origin })(handler) : handler;

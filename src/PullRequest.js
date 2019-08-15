@@ -1,7 +1,7 @@
 const GitHub = require('github-api');
 const gh_token = process.env.GH_TOKEN || false;
 
-export default class PullRequest {
+module.exports = class PullRequest {
 
     constructor(
         user,
@@ -36,8 +36,8 @@ export default class PullRequest {
         titlePullRequest = null,
         descriptionPullRequest = null,
         commitAuthor = {
-            'name': 'PRB0t',
-            'email': '34620110+PRB0t@users.noreply.github.com'
+            'name': 'canada-bot',
+            'email': 'canada.pr.bot@gmail.com'
         }
     ) {
 
