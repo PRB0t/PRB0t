@@ -16,7 +16,6 @@ export default class PullRequest {
 
         this.gh.getUser().getProfile().then(res => {
             this.botUser = res.data;
-            this.isBotRepo = this.botUser.login === user;
         });
 
         this.filesToCommit = [];
@@ -96,7 +95,11 @@ export default class PullRequest {
             .then(() => {
                 console.log('Creating PR...');
                 return this._createPullRequest();
-            });
+            })
+            .then(() => {
+                console.log('Deleting fork...');
+                return this._deleteFork();
+            })
 
     }
 
@@ -139,17 +142,18 @@ export default class PullRequest {
 
         return new Promise((resolve, reject) => {
 
-            if (this.isBotRepo) {
-                this.fork = this.repo;
-                return resolve();
-            }
-
             return this.repo.fork().then(res => {
                 resolve(res);
                 this.fork = this.gh.getRepo(res.data.full_name);
             }).catch(reject);
 
         });
+
+    }
+
+    _deleteFork() {
+
+        return this.fork.deleteRepo();
 
     }
 
