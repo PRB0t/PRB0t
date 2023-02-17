@@ -1,6 +1,9 @@
 const GitHub = require('github-api');
 const gh_token = process.env.GH_TOKEN || false;
 
+const BOT_NAME = 'PRB0t';
+const BOT_EMAIL = '34620110+PRB0t@users.noreply.github.com';
+
 export default class PullRequest {
 
     constructor(
@@ -36,12 +39,15 @@ export default class PullRequest {
         titlePullRequest = null,
         descriptionPullRequest = null,
         commitAuthor = {
-            'name': 'PRB0t',
-            'email': '34620110+PRB0t@users.noreply.github.com'
+            'name': `${BOT_NAME}`,
+            'email': `${BOT_EMAIL}`
         }
     ) {
 
-        this.commitMessage = `🤖 ${commitMessage || 'Anonymous Commit'}`;
+        this.commitMessage =  `🤖 ${commitMessage || 'Anonymous Commit'}`;
+        if (commitAuthor !== `${BOT_NAME}` ){ // If the commit author is not the bot, add as co-author.
+            this.commitMessage = this.commitMessage +  `\n Co-authored-by: ${BOT_NAME} <${BOT_EMAIL}>`
+        }
         this.commitAuthor = commitAuthor;
         this.titlePullRequest = titlePullRequest;
         this.descriptionPullRequest = descriptionPullRequest;
@@ -265,10 +271,10 @@ export default class PullRequest {
     _createPullRequest() {
 
         return this.repo.createPullRequest({
-            title: this.titlePullRequest || `🤖 PRB0t ${this.forkBranch}`,
+            title: this.titlePullRequest || `🤖 ${BOT_NAME} ${this.forkBranch}`,
             body: `${this.descriptionPullRequest || this.commitMessage}
 --
-Automated submit by PRB0t`,
+Automated submit by ${BOT_NAME}`,
             base: this.branch,
             head: `${this.botUser.login}:${this.forkBranch}`
         });
