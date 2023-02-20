@@ -47,7 +47,8 @@
   },
   "dependencies": {
     "github-api": "^3.2.0",
+    "micro": "^9.0.2",
     "micro-cors": "^0.1.1",
-    "micro": "^9.0.2"
+    "octokit": "^2.0.14"
   }
 }
