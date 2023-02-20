@@ -4,10 +4,7 @@
   "version": "1.0.0",
   "description": "Make PR on GitHub, with JSON description of changes",
   "now": {
-    "env": [
-      "GH_TOKEN",
-      "HOST_NAME"
-    ]
+    "env": ["GH_TOKEN", "HOST_NAME"]
   },
   "scripts": {
     "build": "webpack",
@@ -17,7 +14,7 @@
     "lambda:prepare": "npm-run-all lambda:clean build lambda:zip lambda:s3:upload",
     "lambda:publish": "npm run lambda:prepare && aws lambda update-function-code --function-name prb0t --s3-bucket prb0t --s3-key handler.zip",
     "start": "micro -p ${PORT-3000} dist/micro.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "jest"
   },
   "repository": {
     "type": "git",
