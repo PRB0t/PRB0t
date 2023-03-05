@@ -7,7 +7,7 @@
     "env": ["GH_TOKEN", "HOST_NAME"]
   },
   "scripts": {
-    "build": "webpack",
+    "build": "esbuild src/PullRequest.ts --bundle --outfile=index.js --platform=node --external:./node_modules/* --target=es2020",
     "lambda:clean": "rm -rf handler.zip dist",
     "lambda:zip": "zip -r handler.zip dist",
     "lambda:s3:upload": "aws s3 cp ./handler.zip s3://prb0t",
