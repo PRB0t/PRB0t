@@ -1,17 +1,17 @@
 {
   "name": "@prb0t/pr",
-  "main": "src/PullRequest.js",
-  "version": "1.0.0",
+  "main": "index.js",
+  "version": "2.0.0",
   "description": "Make PR on GitHub, with JSON description of changes",
-  "now": {
-    "env": ["GH_TOKEN", "HOST_NAME"]
-  },
   "scripts": {
     "build": "esbuild src/PullRequest.ts --bundle --outfile=index.js --platform=node --external:./node_modules/* --target=es2020",
+    "server:build": "esbuild ./src/handlers/http.ts --bundle --outfile=dist/http.js --platform=node --target=es2020",
+    "server:start": "node dist/server.js",
+    "lambda:build": "esbuild ./src/handlers/lambda.ts --bundle --outfile=dist/lambda.js --platform=node --target=es2020",
     "lambda:clean": "rm -rf handler.zip dist",
     "lambda:zip": "zip -r handler.zip dist",
     "lambda:s3:upload": "aws s3 cp ./handler.zip s3://prb0t",
-    "lambda:prepare": "npm-run-all lambda:clean build lambda:zip lambda:s3:upload",
+    "lambda:prepare": "npm-run-all lambda:clean lambda:build lambda:zip lambda:s3:upload",
     "lambda:publish": "npm run lambda:prepare && aws lambda update-function-code --function-name prb0t --s3-bucket prb0t --s3-key handler.zip",
     "start": "micro -p ${PORT-3000} dist/micro.js",
     "test": "jest"
