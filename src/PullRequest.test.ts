@@ -112,7 +112,7 @@ describe('PullRequest', () => {
     // Step 9 - Create pull request
     mock(mockOctoKit.rest.pulls.create, () => ({}));
 
-    const pr = new PullRequest('PRB0t', 'PRB0t', 'master', 'aToken');
+    const pr = PullRequest('PRB0t', 'PRB0t', 'master', 'aToken');
     pr.configure([{ path: 'foo.txt', content: 'bar' }], '🤖');
     await pr.send();
   });

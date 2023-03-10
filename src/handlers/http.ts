@@ -25,12 +25,7 @@ const server = http.createServer(async (req, res) => {
     const body = await parseBody(req);
     const event = JSON.parse(body || '{}');
 
-    const pr = new PullRequest(
-      event.user,
-      event.repo,
-      event.branch,
-      event.token,
-    );
+    const pr = PullRequest(event.user, event.repo, event.branch, event.token);
 
     pr.configure(
       event.files,

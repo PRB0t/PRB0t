@@ -145,7 +145,7 @@ export function PullRequest(
         ...state.fork,
         branch: state.branch,
       });
-    } catch (err) {
+    } catch (err: any) {
       console.error(`Failed to update the fork with message: ${err?.message}`);
     }
   };

@@ -5,7 +5,7 @@ export function handler(event: any, context: any, done: any) {
     event = JSON.parse(event.body);
   }
 
-  const pr = new PullRequest(event.user, event.repo, event.branch, event.token);
+  const pr = PullRequest(event.user, event.repo, event.branch, event.token);
 
   pr.configure(
     event.files,
