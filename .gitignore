@@ -1,3 +1,5 @@
 dist
+types
 node_modules
+index.js
 handler.zip
